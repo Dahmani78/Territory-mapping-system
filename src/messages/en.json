@@ -1,0 +1,22 @@
+{
+  "Nav": {
+    "map": "Map",
+    "partners": "Partners",
+    "quotes": "Quotes",
+    "test": "Test",
+    "lang": "Language"
+  },
+
+  "Home": {
+    "title": "Territory Mapping",
+    "subtitle": "Choose a page:"
+  },
+
+  "TestSupabase": {
+    "title": "Supabase Test – Partners",
+    "placeholder": "Partner name",
+    "add": "Add",
+    "saving": "Saving...",
+    "error": "Error"
+  }
+}

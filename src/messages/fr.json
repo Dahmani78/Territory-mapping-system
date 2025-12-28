@@ -1,0 +1,22 @@
+{
+  "Nav": {
+    "map": "Carte",
+    "partners": "Partenaires",
+    "quotes": "Devis",
+    "test": "Test",
+    "lang": "Langue"
+  },
+
+  "Home": {
+    "title": "Cartographie des territoires",
+    "subtitle": "Choisissez une page :"
+  },
+
+  "TestSupabase": {
+    "title": "Test Supabase – Partenaires",
+    "placeholder": "Nom du partenaire",
+    "add": "Ajouter",
+    "saving": "Enregistrement...",
+    "error": "Erreur"
+  }
+}

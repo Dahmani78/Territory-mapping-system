@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabaseClient";
 
 type Partner = { id: string; name: string };
 
 export default function TestSupabasePage() {
+  const t = useTranslations("TestSupabase");
   const [partners, setPartners] = useState<Partner[]>([]);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -50,26 +52,28 @@ export default function TestSupabasePage() {
 
   return (
     <main className="p-6 max-w-xl">
-      <h1 className="text-xl font-semibold">Test Supabase - Partners</h1>
+      <h1 className="text-xl font-semibold">{t("title")}</h1>
 
       <div className="mt-4 flex gap-2">
         <input
           className="border rounded px-3 py-2 w-full"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Nom du partenaire"
+          placeholder={t("placeholder")}
         />
         <button
           className="border rounded px-4 py-2"
           onClick={addPartner}
           disabled={loading}
         >
-          {loading ? "..." : "Ajouter"}
+          {loading ? t("saving") : t("add")}
         </button>
       </div>
 
       {errorMsg && (
-        <p className="mt-3 text-sm text-red-600">Erreur: {errorMsg}</p>
+        <p className="mt-3 text-sm text-red-600">
+          {t("error")}: {errorMsg}
+        </p>
       )}
 
       <ul className="mt-6 space-y-2">
