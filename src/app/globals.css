@@ -27,3 +27,19 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Keep Leaflet controls below app panels */
+.leaflet-control {
+  z-index: 800 !important;
+}
+
+/* App panels must stay above any Leaflet controls/widgets */
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 1000 !important;
+}
+
+.quote-panel {
+  z-index: 5000 !important;
+}
+
