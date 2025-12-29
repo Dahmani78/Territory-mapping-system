@@ -18,5 +18,96 @@
     "add": "Ajouter",
     "saving": "Enregistrement...",
     "error": "Erreur"
-  }
+  },
+  "Quotes": {
+  "title": "Devis",
+  "subtitle": "Saisissez une localisation (adresse ou coordonnées) pour trouver le partenaire assigné selon les territoires.",
+  "addressLabel": "Adresse",
+  "addressPlaceholder": "ex: 200 Rue Saint-Paul O, Montréal, QC",
+  "geocodeButton": "Géocoder l’adresse",
+  "geocoding": "Géocodage...",
+  "coordsLabel": "Coordonnées",
+  "latLabel": "Latitude",
+  "lngLabel": "Longitude",
+  "findButton": "Trouver le partenaire",
+  "createButton": "Créer le devis",
+  "finding": "Recherche...",
+  "creating": "Création...",
+  "resultTitle": "Résultat",
+  "geocodeResult": "Résultat géocodage",
+  "assignedPartner": "Partenaire assigné",
+  "territory": "Territoire",
+  "noMatch": "Aucun territoire correspondant. Le devis peut être créé sans assignation.",
+  "quoteCreated": "Devis créé",
+  "quoteId": "ID du devis"
+
+},
+"Common": {
+  "errorPrefix": "Erreur"
+},
+
+"Map": {
+  "title": "Carte",
+  "quoteTool": "Outil devis",
+  "clickHint": "Cliquez sur la carte pour sélectionner une localisation.",
+  "drawHint": "Utilisez les outils de dessin pour créer ou modifier des territoires.",
+  "mode": "Mode",
+  "quoteMode": "Devis",
+  "drawMode": "Dessin",
+  "lat": "Latitude",
+  "lng": "Longitude",
+  "findPartner": "Trouver le partenaire",
+  "createQuote": "Créer le devis",
+  "finding": "Recherche...",
+  "creating": "Création...",
+  "assignedPartner": "Partenaire assigné",
+  "territory": "Territoire",
+  "noMatch": "Aucun territoire correspondant.",
+  "quoteCreated": "Devis créé",
+  "quoteId": "ID du devis",
+  "clear": "Effacer",
+  "noActiveTitle": "Aucun partenaire actif",
+  "noActiveMessage": "Activez un partenaire dans la page Partenaires pour pouvoir dessiner des territoires.",
+  "goToPartners": "Aller aux partenaires"
+
+},
+
+"Auth": {
+  "title": "Connexion",
+  "subtitle": "Connectez-vous pour accéder aux fonctionnalités sécurisées.",
+  "email": "Email",
+  "password": "Mot de passe",
+  "login": "Se connecter",
+  "logout": "Se déconnecter",
+  "loading": "Connexion...",
+  "loggedInAs": "Connecté en tant que"
+},
+
+"Partners": {
+  "title": "Partenaires",
+  "subtitle": "Créer et gérer les partenaires utilisés pour attribuer les territoires.",
+  "listTitle": "Liste des partenaires",
+  "createTitle": "Créer un partenaire",
+  "editTitle": "Modifier un partenaire",
+  "name": "Nom",
+  "partnerType": "Type de partenaire",
+  "languages": "Langues",
+  "languagesHint": "Sélectionnez une ou plusieurs langues.",
+  "contact": "Contact",
+  "contactName": "Nom du contact",
+  "contactEmail": "Email du contact",
+  "contactPhone": "Téléphone du contact",
+  "active": "Actif",
+  "save": "Enregistrer",
+  "saving": "Enregistrement...",
+  "new": "Nouveau",
+  "edit": "Modifier",
+  "delete": "Supprimer",
+  "confirmDelete": "Supprimer ce partenaire ?",
+  "loadError": "Impossible de charger les partenaires",
+  "saveError": "Impossible d’enregistrer le partenaire",
+  "deleteError": "Impossible de supprimer le partenaire",
+  "adminOnly": "Réservé admin : vous n’avez pas le droit de modifier les partenaires."
+}
+
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   GeoJSON,
@@ -266,21 +268,45 @@ export default function TerritoryMap() {
   return (
     <div className="relative h-[calc(100vh-56px)] w-full">
       {/* Partner selector */}
-      <div className="absolute top-4 right-4 z-[1000] bg-white border rounded p-3 text-sm w-72">
-        <div className="font-semibold mb-2">Active partner</div>
-        <select
-          className="w-full border rounded px-2 py-1"
-          value={selectedPartnerId}
-          onChange={(e) => setSelectedPartnerId(e.target.value)}
-        >
-          {partners.length === 0 && <option value="">(No active partners)</option>}
-          {partners.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.name}
-            </option>
-          ))}
-        </select>
+      {/* Partner selector */}
+<div className="absolute top-4 right-4 z-[1000] w-72 space-y-2">
+
+  {partners.length === 0 && (
+    <div className="bg-yellow-50 border border-yellow-300 rounded p-3 text-xs">
+      <div className="font-semibold">{t("noActiveTitle")}</div>
+      <div className="mt-1 opacity-80">
+        {t("noActiveMessage")}
       </div>
+      <Link
+        href="/partners"
+        className="mt-2 inline-block underline font-medium"
+      >
+        {t("goToPartners")}
+      </Link>
+    </div>
+  )}
+
+  <div className="bg-white border rounded p-3 text-sm">
+    <div className="font-semibold mb-2">Active partner</div>
+    <select
+      className="w-full border rounded px-2 py-1"
+      value={selectedPartnerId}
+      onChange={(e) => setSelectedPartnerId(e.target.value)}
+      disabled={partners.length === 0}
+    >
+      {partners.length === 0 && (
+        <option value="">(No active partners)</option>
+      )}
+      {partners.map((p) => (
+        <option key={p.id} value={p.id}>
+          {p.name}
+        </option>
+      ))}
+    </select>
+  </div>
+
+</div>
+
 
       {/* Quote panel */}
       <div className="absolute left-4 bottom-16 z-[1000] bg-white border rounded p-3 w-80 text-sm">
