@@ -106,7 +106,9 @@
   "loadError": "Failed to load partners",
   "saveError": "Failed to save partner",
   "deleteError": "Failed to delete partner",
-  "adminOnly": "Admin only: you do not have permission to modify partners."
+  "adminOnly": "Admin only: you do not have permission to modify partners.",
+  "deleteBlocked": "Cannot delete this partner because it has territories."
+
 }
 
 }

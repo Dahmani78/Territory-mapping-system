@@ -107,7 +107,8 @@
   "loadError": "Impossible de charger les partenaires",
   "saveError": "Impossible d’enregistrer le partenaire",
   "deleteError": "Impossible de supprimer le partenaire",
-  "adminOnly": "Réservé admin : vous n’avez pas le droit de modifier les partenaires."
+  "adminOnly": "Réservé admin : vous n’avez pas le droit de modifier les partenaires.",
+  "deleteBlocked": "Impossible de supprimer le partenaire car des territoires lui sont associés."
 }
 
 }
