@@ -105,7 +105,8 @@ export default function TerritoryMap() {
   const loadPartners = async () => {
     const { data, error } = await supabase
       .from("partners")
-      .select("id,name")
+      .select("id,name,active")
+      .eq("active", true)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -272,7 +273,7 @@ export default function TerritoryMap() {
           value={selectedPartnerId}
           onChange={(e) => setSelectedPartnerId(e.target.value)}
         >
-          {partners.length === 0 && <option>(No partners)</option>}
+          {partners.length === 0 && <option value="">(No active partners)</option>}
           {partners.map((p) => (
             <option key={p.id} value={p.id}>
               {p.name}
