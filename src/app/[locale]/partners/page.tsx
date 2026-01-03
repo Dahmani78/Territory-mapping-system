@@ -1,5 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { isAdmin } from "@/lib/authRole";
+
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabaseClient";
@@ -21,6 +24,10 @@ const LANG_OPTIONS = [
 
 export default function PartnersPage() {
   const t = useTranslations("Partners");
+  const router = useRouter();
+
+  // ✅ Admin guard
+  const [checkingRole, setCheckingRole] = useState(true);
 
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,6 +59,19 @@ export default function PartnersPage() {
     setErrorMsg(null);
   };
 
+  // ✅ Check role once; redirect non-admin to /map
+  useEffect(() => {
+    (async () => {
+      const ok = await isAdmin();
+      if (!ok) {
+        router.replace("/map");
+        return;
+      }
+      setCheckingRole(false);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const loadPartners = async () => {
     setLoading(true);
     setErrorMsg(null);
@@ -72,10 +92,11 @@ export default function PartnersPage() {
     setLoading(false);
   };
 
+  // ✅ Only load after admin check
   useEffect(() => {
-    loadPartners();
+    if (!checkingRole) loadPartners();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [checkingRole]);
 
   const startEdit = (p: Partner) => {
     setEditingId(p.id);
@@ -122,7 +143,6 @@ export default function PartnersPage() {
         : await supabase.from("partners").insert(payload);
 
       if (res.error) {
-        // Typical message when not admin (RLS)
         if (String(res.error.message).toLowerCase().includes("row-level security")) {
           throw new Error(t("adminOnly"));
         }
@@ -145,29 +165,35 @@ export default function PartnersPage() {
     const { error } = await supabase.from("partners").delete().eq("id", id);
 
     if (error) {
-  const msgLower = error.message.toLowerCase();
+      const msgLower = error.message.toLowerCase();
 
-  const isBlocked =
-    msgLower.includes("violates foreign key") ||
-    msgLower.includes("foreign key") ||
-    msgLower.includes("territories exist") ||
-    msgLower.includes("cannot delete partner");
+      const isBlocked =
+        msgLower.includes("violates foreign key") ||
+        msgLower.includes("foreign key") ||
+        msgLower.includes("territories exist") ||
+        msgLower.includes("cannot delete partner");
 
-  // ✅ If blocked, show the full translated sentence only (no prefix)
-  if (isBlocked) {
-    setErrorMsg(t("deleteBlocked"));
-    return;
-  }
+      if (isBlocked) {
+        setErrorMsg(t("deleteBlocked"));
+        return;
+      }
 
-  // Otherwise keep a generic prefix + raw error
-  setErrorMsg(`${t("deleteError")}: ${error.message}`);
-  return;
-}
-
+      setErrorMsg(`${t("deleteError")}: ${error.message}`);
+      return;
+    }
 
     await loadPartners();
     if (editingId === id) resetForm();
   };
+
+  // ✅ Render a small gate while checking role (avoids flicker)
+  if (checkingRole) {
+    return (
+      <main className="mx-auto max-w-5xl p-6">
+        <div className="text-sm opacity-70">Checking permissions...</div>
+      </main>
+    );
+  }
 
   return (
     <main className="mx-auto max-w-5xl p-6">

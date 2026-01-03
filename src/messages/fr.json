@@ -7,108 +7,266 @@
     "lang": "Langue"
   },
 
+  "Common": {
+    "errorPrefix": "Erreur"
+  },
+
+  "Auth": {
+    "brand": "Cartographie des territoires",
+    "title": "Connexion",
+    "subtitle": "Connectez-vous pour accéder aux fonctionnalités sécurisées.",
+    "email": "Email",
+    "emailHint": "Utilisez l’email de votre utilisateur Supabase.",
+    "password": "Mot de passe",
+    "remember": "Se souvenir de moi",
+    "login": "Se connecter",
+    "logout": "Se déconnecter",
+
+    "loading": "Connexion…",
+
+    "loggedInAs": "Connecté en tant que",
+    "loggedInAsRole": "Connecté en tant que",
+
+    "roleAdmin": "Admin",
+    "roleStaff": "Staff",
+    "roleClient": "Client",
+    "roleUser": "Utilisateur",
+    "success": "Connexion réussie.",
+    "backToApp": "Retour à l’application",
+    "securityNote": "Si vous n’avez pas accès, contactez un administrateur.",
+    "footer": "Outil interne — accès contrôlé"
+  },
+
   "Home": {
     "title": "Cartographie des territoires",
-    "subtitle": "Choisissez une page :"
+    "subtitle": "Choisissez ce que vous voulez faire.",
+
+    "ctaPrimary": "Principal",
+    "ctaWorkflow": "Process",
+
+    "ctaMapTitle": "Carte & Territoires",
+    "ctaMapDesc": "Dessiner, éditer et gérer les territoires des partenaires sur la carte.",
+    "openMap": "Ouvrir la carte",
+    "manageTerritories": "Territoires",
+    "mapHint": "Utilisez le mode Dessin pour créer/modifier les territoires. Utilisez le mode Devis pour tester l’attribution.",
+
+    "ctaQuotesTitle": "Devis",
+    "ctaQuotesDesc": "Créer des devis et attribuer automatiquement un partenaire selon les territoires.",
+    "openQuotes": "Ouvrir les devis",
+    "createQuote": "Créer un devis",
+    "quotesHint": "Filtrer, exporter en CSV, ouvrir sur la carte, voir le détail et (admin) supprimer.",
+
+    "ctaPartnersTitle": "Partenaires",
+    "ctaPartnersDesc": "Gérer les partenaires, contacts, langues et statut d’activation.",
+    "openPartners": "Ouvrir les partenaires",
+    "partnersHint": "Activez au moins un partenaire pour dessiner des territoires et recevoir des devis.",
+
+    "adminOnly": "Admin uniquement",
+    "restricted": "Restreint",
+    "checkingRole": "Vérification du rôle…",
+
+    "partnersNoAccessTitle": "Partenaires restreints",
+    "partnersNoAccessDesc": "Seuls les administrateurs peuvent accéder à la gestion des partenaires.",
+
+    "footer": "Astuce : changez la langue via le menu en haut à droite."
   },
 
-  "TestSupabase": {
-    "title": "Test Supabase – Partenaires",
-    "placeholder": "Nom du partenaire",
-    "add": "Ajouter",
-    "saving": "Enregistrement...",
-    "error": "Erreur"
+  "Map": {
+    "title": "Carte",
+    "quoteTool": "Outil de devis",
+
+    "mode": "Mode",
+    "quoteMode": "Devis",
+    "drawMode": "Dessin",
+
+    "clickHint": "Cliquez sur la carte pour sélectionner une localisation.",
+    "drawHint": "Utilisez les outils de dessin pour créer ou modifier des territoires.",
+
+    "lat": "Latitude",
+    "lng": "Longitude",
+
+    "findPartner": "Trouver le partenaire",
+    "finding": "Recherche…",
+
+    "assignedPartner": "Partenaire assigné",
+    "territory": "Territoire",
+
+    "noActiveTitle": "Aucun partenaire actif",
+    "noActiveMessage": "Vous devez activer au moins un partenaire pour dessiner des territoires.",
+    "goToPartners": "Aller aux partenaires",
+
+    "selection": "Sélection",
+    "currentPartner": "Partenaire actuel",
+    "reassignPartner": "Réassigner le partenaire",
+
+    "rename": "Renommer",
+    "priority": "Priorité",
+    "priorityHint": "La priorité la plus élevée prévaut en cas de chevauchement.",
+
+    "zoomTo": "Zoomer",
+    "focus": "Centrer",
+    "clear": "Effacer",
+
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+
+    "resolveOverlaps": "Résoudre les chevauchements",
+
+    "overlapsForSelection": "Chevauchements pour la sélection",
+    "noOverlaps": "Aucun chevauchement détecté.",
+
+    "auditTitle": "Audit global des chevauchements",
+    "show": "Afficher",
+    "hide": "Masquer",
+    "refresh": "Rafraîchir",
+    "refreshing": "Actualisation…",
+    "noGlobalOverlaps": "Aucun chevauchement trouvé.",
+    "showingFirst": "Affichage des 30 premiers chevauchements",
+
+    "deleteConfirm": "Supprimer ce territoire ?",
+    "nameRequired": "Le nom est obligatoire.",
+    "partnerRequired": "Le partenaire est obligatoire.",
+
+    "saved": "Territoire mis à jour.",
+    "deleted": "Territoire supprimé.",
+    "selectHint": "Cliquez sur un territoire pour le sélectionner."
   },
+
   "Quotes": {
-  "title": "Devis",
-  "subtitle": "Saisissez une localisation (adresse ou coordonnées) pour trouver le partenaire assigné selon les territoires.",
-  "addressLabel": "Adresse",
-  "addressPlaceholder": "ex: 200 Rue Saint-Paul O, Montréal, QC",
-  "geocodeButton": "Géocoder l’adresse",
-  "geocoding": "Géocodage...",
-  "coordsLabel": "Coordonnées",
-  "latLabel": "Latitude",
-  "lngLabel": "Longitude",
-  "findButton": "Trouver le partenaire",
-  "createButton": "Créer le devis",
-  "finding": "Recherche...",
-  "creating": "Création...",
-  "resultTitle": "Résultat",
-  "geocodeResult": "Résultat géocodage",
-  "assignedPartner": "Partenaire assigné",
-  "territory": "Territoire",
-  "noMatch": "Aucun territoire correspondant. Le devis peut être créé sans assignation.",
-  "quoteCreated": "Devis créé",
-  "quoteId": "ID du devis"
+    "title": "Devis",
+    "subtitle": "Saisissez une localisation (adresse ou coordonnées) pour trouver le partenaire assigné selon les territoires.",
 
-},
-"Common": {
-  "errorPrefix": "Erreur"
-},
+    "addressLabel": "Adresse",
+    "addressPlaceholder": "ex. 200 rue Saint-Paul Ouest, Montréal, QC",
 
-"Map": {
-  "title": "Carte",
-  "quoteTool": "Outil devis",
-  "clickHint": "Cliquez sur la carte pour sélectionner une localisation.",
-  "drawHint": "Utilisez les outils de dessin pour créer ou modifier des territoires.",
-  "mode": "Mode",
-  "quoteMode": "Devis",
-  "drawMode": "Dessin",
-  "lat": "Latitude",
-  "lng": "Longitude",
-  "findPartner": "Trouver le partenaire",
-  "createQuote": "Créer le devis",
-  "finding": "Recherche...",
-  "creating": "Création...",
-  "assignedPartner": "Partenaire assigné",
-  "territory": "Territoire",
-  "noMatch": "Aucun territoire correspondant.",
-  "quoteCreated": "Devis créé",
-  "quoteId": "ID du devis",
-  "clear": "Effacer",
-  "noActiveTitle": "Aucun partenaire actif",
-  "noActiveMessage": "Activez un partenaire dans la page Partenaires pour pouvoir dessiner des territoires.",
-  "goToPartners": "Aller aux partenaires"
+    "geocodeButton": "Géocoder l’adresse",
+    "geocoding": "Géocodage…",
 
-},
+    "coordsLabel": "Coordonnées",
+    "latLabel": "Latitude",
+    "lngLabel": "Longitude",
 
-"Auth": {
-  "title": "Connexion",
-  "subtitle": "Connectez-vous pour accéder aux fonctionnalités sécurisées.",
-  "email": "Email",
-  "password": "Mot de passe",
-  "login": "Se connecter",
-  "logout": "Se déconnecter",
-  "loading": "Connexion...",
-  "loggedInAs": "Connecté en tant que"
-},
+    "findButton": "Trouver le partenaire",
+    "finding": "Recherche…",
 
-"Partners": {
-  "title": "Partenaires",
-  "subtitle": "Créer et gérer les partenaires utilisés pour attribuer les territoires.",
-  "listTitle": "Liste des partenaires",
-  "createTitle": "Créer un partenaire",
-  "editTitle": "Modifier un partenaire",
-  "name": "Nom",
-  "partnerType": "Type de partenaire",
-  "languages": "Langues",
-  "languagesHint": "Sélectionnez une ou plusieurs langues.",
-  "contact": "Contact",
-  "contactName": "Nom du contact",
-  "contactEmail": "Email du contact",
-  "contactPhone": "Téléphone du contact",
-  "active": "Actif",
-  "save": "Enregistrer",
-  "saving": "Enregistrement...",
-  "new": "Nouveau",
-  "edit": "Modifier",
-  "delete": "Supprimer",
-  "confirmDelete": "Supprimer ce partenaire ?",
-  "loadError": "Impossible de charger les partenaires",
-  "saveError": "Impossible d’enregistrer le partenaire",
-  "deleteError": "Impossible de supprimer le partenaire",
-  "adminOnly": "Réservé admin : vous n’avez pas le droit de modifier les partenaires.",
-  "deleteBlocked": "Impossible de supprimer le partenaire car des territoires lui sont associés."
-}
+    "createButton": "Créer le devis",
+    "creating": "Création…",
 
+    "resultTitle": "Résultat",
+    "geocodeResult": "Résultat du géocodage",
+
+    "assignedPartner": "Partenaire assigné",
+    "territory": "Territoire",
+
+    "noMatch": "Aucun territoire correspondant. Le devis peut être créé sans assignation.",
+
+    "quoteCreated": "Devis créé",
+    "quoteId": "ID du devis"
+  },
+
+  "QuotesList": {
+    "createTitle": "Créer un devis",
+    "listTitle": "Liste des devis",
+    "listSubtitle": "Filtrez les devis par statut, partenaire et dates. Exportez le résultat filtré.",
+
+    "statusFilter": "Statut",
+    "partnerFilter": "Partenaire",
+    "from": "Du",
+    "to": "Au",
+
+    "all": "Tous",
+    "assigned": "Assigné",
+    "unassigned": "Non assigné",
+
+    "clearFilters": "Réinitialiser",
+    "exportCsv": "Exporter CSV",
+    "exporting": "Export…",
+
+    "loading": "Chargement…",
+    "noQuotes": "Aucun devis trouvé.",
+
+    "created": "Créé",
+    "status": "Statut",
+    "partner": "Partenaire",
+    "territory": "Territoire",
+    "address": "Adresse",
+    "coords": "Coordonnées",
+    "reason": "Raison",
+
+    "actions": "Actions",
+    "view": "Voir",
+    "openMap": "Ouvrir sur la carte",
+    "delete": "Supprimer",
+    "confirmDelete": "Supprimer ce devis ?",
+
+    "loadMore": "Charger plus",
+    "noMore": "Fin de liste",
+    "rowsShown": "lignes affichées"
+  },
+
+  "QuoteDetail": {
+    "title": "Détails du devis",
+    "backToList": "Retour à la liste",
+    "openMap": "Ouvrir sur la carte",
+    "delete": "Supprimer",
+    "confirmDelete": "Supprimer ce devis ?",
+    "loading": "Chargement…",
+    "notFound": "Devis introuvable.",
+    "quoteId": "ID du devis",
+    "createdAt": "Créé le",
+    "lat": "Latitude",
+    "lng": "Longitude",
+    "address": "Adresse",
+    "assignment": "Affectation",
+    "status": "Statut",
+   "partner": "Partenaire",
+    "territory": "Territoire",
+    "reason": "Raison",
+    "timeline": "Historique",
+    "step1Title": "Étape 1",
+    "step1Body": "Devis créé",
+    "step2Title": "Étape 2",
+   "step2Assigned": "Partenaire assigné selon territoire + priorité",
+    "step2Unassigned": "Aucun territoire correspondant",
+    "step3Title": "Étape 3",
+    "step3Body": "Ouvrir la localisation sur la carte"
+
+  },
+
+  "Partners": {
+    "title": "Partenaires",
+    "subtitle": "Créer et gérer les partenaires utilisés pour attribuer les territoires.",
+
+    "listTitle": "Liste des partenaires",
+    "createTitle": "Créer un partenaire",
+    "editTitle": "Modifier un partenaire",
+
+    "name": "Nom",
+    "partnerType": "Type de partenaire",
+
+    "languages": "Langues",
+    "languagesHint": "Sélectionnez une ou plusieurs langues.",
+
+    "contact": "Contact",
+    "contactName": "Nom du contact",
+    "contactEmail": "E-mail du contact",
+    "contactPhone": "Téléphone du contact",
+
+    "active": "Actif",
+
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+
+    "new": "Nouveau",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "confirmDelete": "Supprimer ce partenaire ?",
+
+    "loadError": "Impossible de charger les partenaires.",
+    "saveError": "Impossible d’enregistrer le partenaire.",
+    "deleteError": "Impossible de supprimer le partenaire.",
+
+    "adminOnly": "Réservé aux administrateurs : vous n’avez pas le droit de modifier les partenaires.",
+    "deleteBlocked": "Impossible de supprimer le partenaire, car des territoires lui sont associés."
+  }
 }

@@ -7,108 +7,263 @@
     "lang": "Language"
   },
 
-  "Home": {
-    "title": "Territory Mapping",
-    "subtitle": "Choose a page:"
+  "Common": {
+    "errorPrefix": "Error"
   },
 
-  "TestSupabase": {
-    "title": "Supabase Test – Partners",
-    "placeholder": "Partner name",
-    "add": "Add",
-    "saving": "Saving...",
-    "error": "Error"
+  "Auth": {
+    "brand": "Territory Mapping",
+    "title": "Login",
+    "subtitle": "Sign in to access secured features.",
+    "email": "Email",
+    "emailHint": "Use your Supabase user email.",
+    "password": "Password",
+    "remember": "Remember me",
+    "login": "Sign in",
+    "logout": "Sign out",
+    "loading": "Signing in…",
+    "loggedInAs": "Logged in as",
+    "loggedInAsRole": "Signed in as",
+
+    "roleAdmin": "Admin",
+    "roleStaff": "Staff",
+    "roleClient": "Client",
+    "roleUser": "User",
+    "success": "Signed in successfully.",
+    "backToApp": "Back to app",
+    "securityNote": "If you don’t have access, contact an administrator.",
+    "footer": "Internal tool — access controlled"
+  },
+
+  "Home": {
+    "title": "Territory Mapping",
+    "subtitle": "Choose what you want to do.",
+
+    "ctaPrimary": "Primary",
+    "ctaWorkflow": "Workflow",
+
+    "ctaMapTitle": "Map & Territories",
+    "ctaMapDesc": "Draw, edit and manage partner territories on the map.",
+    "openMap": "Open map",
+    "manageTerritories": "Territories",
+    "mapHint": "Use Draw mode to create/edit territories. Use Quote mode to test assignment.",
+
+    "ctaQuotesTitle": "Quotes",
+    "ctaQuotesDesc": "Create quotes and auto-assign partners based on territories.",
+    "openQuotes": "Open quotes",
+    "createQuote": "Create quote",
+    "quotesHint": "Filter, export CSV, open in map, view details and (admin) delete.",
+
+    "ctaPartnersTitle": "Partners",
+    "ctaPartnersDesc": "Manage partners, contacts, languages and activation status.",
+    "openPartners": "Open partners",
+    "partnersHint": "Enable at least one partner to draw territories and receive quotes.",
+
+    "adminOnly": "Admin only",
+    "restricted": "Restricted",
+    "checkingRole": "Checking role…",
+
+    "partnersNoAccessTitle": "Partners are restricted",
+    "partnersNoAccessDesc": "Only admins can access partner management.",
+
+    "footer": "Tip: Switch language from the top-right menu."
+  },
+
+  "Map": {
+    "title": "Map",
+    "quoteTool": "Quote tool",
+
+    "mode": "Mode",
+    "quoteMode": "Quote",
+    "drawMode": "Draw",
+
+    "clickHint": "Click on the map to select a location.",
+    "drawHint": "Use the drawing tools to create or edit territories.",
+
+    "lat": "Latitude",
+    "lng": "Longitude",
+
+    "findPartner": "Find partner",
+    "finding": "Searching…",
+
+    "assignedPartner": "Assigned partner",
+    "territory": "Territory",
+
+    "noActiveTitle": "No active partners",
+    "noActiveMessage": "You must enable at least one partner to draw territories.",
+    "goToPartners": "Go to partners",
+
+    "selection": "Selection",
+    "currentPartner": "Current partner",
+    "reassignPartner": "Reassign partner",
+
+    "rename": "Rename",
+    "priority": "Priority",
+    "priorityHint": "Higher priority takes precedence in case of overlap.",
+
+    "zoomTo": "Zoom to",
+    "focus": "Focus",
+    "clear": "Clear",
+
+    "save": "Save",
+    "delete": "Delete",
+
+    "resolveOverlaps": "Resolve overlaps",
+
+    "overlapsForSelection": "Overlaps for selection",
+    "noOverlaps": "No overlaps detected.",
+
+    "auditTitle": "Global overlap audit",
+    "show": "Show",
+    "hide": "Hide",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing…",
+    "noGlobalOverlaps": "No overlaps found.",
+    "showingFirst": "Showing the first 30 overlaps",
+
+    "deleteConfirm": "Delete this territory?",
+    "nameRequired": "Name is required.",
+    "partnerRequired": "Partner is required.",
+
+    "saved": "Territory updated.",
+    "deleted": "Territory deleted.",
+    "selectHint": "Click a territory to select it."
   },
 
   "Quotes": {
-  "title": "Quotes",
-  "subtitle": "Enter a location (address or coordinates) to find the assigned partner based on territories.",
-  "addressLabel": "Address",
-  "addressPlaceholder": "e.g., 200 Rue Saint-Paul O, Montréal, QC",
-  "geocodeButton": "Geocode address",
-  "geocoding": "Geocoding...",
-  "coordsLabel": "Coordinates",
-  "latLabel": "Latitude",
-  "lngLabel": "Longitude",
-  "findButton": "Find partner",
-  "createButton": "Create quote",
-  "finding": "Searching...",
-  "creating": "Creating...",
-  "resultTitle": "Result",
-  "geocodeResult": "Geocode result",
-  "assignedPartner": "Assigned partner",
-  "territory": "Territory",
-  "noMatch": "No matching territory found. Quote can be created unassigned.",
-  "quoteCreated": "Quote created",
-  "quoteId": "Quote ID"
-},
-"Common": {
-  "errorPrefix": "Error"
-},
+    "title": "Quotes",
+    "subtitle": "Enter a location (address or coordinates) to find the assigned partner based on territories.",
 
-"Map": {
-  "title": "Map",
-  "quoteTool": "Quote tool",
-  "clickHint": "Click on the map to select a location.",
-  "drawHint": "Use the drawing tools to create or edit territories.",
-  "mode": "Mode",
-  "quoteMode": "Quote",
-  "drawMode": "Draw",
-  "lat": "Latitude",
-  "lng": "Longitude",
-  "findPartner": "Find partner",
-  "createQuote": "Create quote",
-  "finding": "Searching...",
-  "creating": "Creating...",
-  "assignedPartner": "Assigned partner",
-  "territory": "Territory",
-  "noMatch": "No matching territory found.",
-  "quoteCreated": "Quote created",
-  "quoteId": "Quote ID",
-  "clear": "Clear",
-  "noActiveTitle": "No active partners",
-  "noActiveMessage": "Enable a partner in the Partners page to start drawing territories.",
-  "goToPartners": "Go to Partners"
-},
+    "addressLabel": "Address",
+    "addressPlaceholder": "e.g. 200 Rue Saint-Paul Ouest, Montréal, QC",
 
-"Auth": {
-  "title": "Login",
-  "subtitle": "Sign in to access secured features.",
-  "email": "Email",
-  "password": "Password",
-  "login": "Login",
-  "logout": "Logout",
-  "loading": "Signing in...",
-  "loggedInAs": "Logged in as"
-},
+    "geocodeButton": "Geocode address",
+    "geocoding": "Geocoding…",
 
-"Partners": {
-  "title": "Partners",
-  "subtitle": "Create and manage partners used to assign territories.",
-  "listTitle": "Partner list",
-  "createTitle": "Create partner",
-  "editTitle": "Edit partner",
-  "name": "Name",
-  "partnerType": "Partner type",
-  "languages": "Languages",
-  "languagesHint": "Select one or more languages.",
-  "contact": "Contact",
-  "contactName": "Contact name",
-  "contactEmail": "Contact email",
-  "contactPhone": "Contact phone",
-  "active": "Active",
-  "save": "Save",
-  "saving": "Saving...",
-  "new": "New",
-  "edit": "Edit",
-  "delete": "Delete",
-  "confirmDelete": "Delete this partner?",
-  "loadError": "Failed to load partners",
-  "saveError": "Failed to save partner",
-  "deleteError": "Failed to delete partner",
-  "adminOnly": "Admin only: you do not have permission to modify partners.",
-  "deleteBlocked": "Cannot delete this partner because it has territories."
+    "coordsLabel": "Coordinates",
+    "latLabel": "Latitude",
+    "lngLabel": "Longitude",
 
-}
+    "findButton": "Find partner",
+    "finding": "Searching…",
 
+    "createButton": "Create quote",
+    "creating": "Creating…",
+
+    "resultTitle": "Result",
+    "geocodeResult": "Geocoding result",
+
+    "assignedPartner": "Assigned partner",
+    "territory": "Territory",
+
+    "noMatch": "No matching territory found. The quote can be created without an assignment.",
+
+    "quoteCreated": "Quote created",
+    "quoteId": "Quote ID"
+  },
+
+  "QuotesList": {
+    "createTitle": "Create quote",
+    "listTitle": "Quotes list",
+    "listSubtitle": "Filter quotes by status, partner, and date. Export the filtered set.",
+
+    "statusFilter": "Status",
+    "partnerFilter": "Partner",
+    "from": "From",
+    "to": "To",
+
+    "all": "All",
+    "assigned": "Assigned",
+    "unassigned": "Unassigned",
+
+    "clearFilters": "Clear filters",
+    "exportCsv": "Export CSV",
+    "exporting": "Exporting…",
+
+    "loading": "Loading…",
+    "noQuotes": "No quotes found.",
+
+    "created": "Created",
+    "status": "Status",
+    "partner": "Partner",
+    "territory": "Territory",
+    "address": "Address",
+    "coords": "Coords",
+    "reason": "Reason",
+
+    "actions": "Actions",
+    "view": "View",
+    "openMap": "Open in map",
+    "delete": "Delete",
+    "confirmDelete": "Delete this quote?",
+
+    "loadMore": "Load more",
+    "noMore": "No more",
+    "rowsShown": "rows shown"
+  },
+
+  "QuoteDetail": {
+    "title": "Quote details",
+    "backToList": "Back to list",
+    "openMap": "Open in map",
+    "delete": "Delete",
+    "confirmDelete": "Delete this quote?",
+    "loading": "Loading…",
+    "notFound": "Quote not found.",
+    "quoteId": "Quote ID",
+    "createdAt": "Created at",
+    "lat": "Latitude",
+    "lng": "Longitude",
+    "address": "Address",
+    "assignment": "Assignment",
+    "status": "Status",
+    "partner": "Partner",
+    "territory": "Territory",
+    "reason": "Reason",
+   "timeline": "Timeline",
+    "step1Title": "Step 1",
+    "step1Body": "Quote created",
+    "step2Title": "Step 2",
+    "step2Assigned": "Partner assigned based on territory + priority",
+    "step2Unassigned": "No matching territory found",
+    "step3Title": "Step 3",
+    "step3Body": "Open location on map"
+  },
+
+  "Partners": {
+    "title": "Partners",
+    "subtitle": "Create and manage partners used to assign territories.",
+
+    "listTitle": "Partner list",
+    "createTitle": "Create partner",
+    "editTitle": "Edit partner",
+
+    "name": "Name",
+    "partnerType": "Partner type",
+
+    "languages": "Languages",
+    "languagesHint": "Select one or more languages.",
+
+    "contact": "Contact",
+    "contactName": "Contact name",
+    "contactEmail": "Contact email",
+    "contactPhone": "Contact phone",
+
+    "active": "Active",
+
+    "save": "Save",
+    "saving": "Saving…",
+
+    "new": "New",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Delete this partner?",
+
+    "loadError": "Failed to load partners.",
+    "saveError": "Failed to save partner.",
+    "deleteError": "Failed to delete partner.",
+
+    "adminOnly": "Admin only: you do not have permission to modify partners.",
+    "deleteBlocked": "Cannot delete this partner because territories are associated with it."
+  }
 }
