@@ -1,9 +1,10 @@
 {
   "Nav": {
+    "brand": "Territory Mapping",
+    "brandSubtitle": "Operations US / Canada",
     "map": "Map",
     "partners": "Partners",
     "quotes": "Quotes",
-    "test": "Test",
     "lang": "Language"
   },
 
@@ -22,6 +23,7 @@
     "login": "Sign in",
     "logout": "Sign out",
     "loading": "Signing in…",
+    "roleLoading": "Loading role…",
     "loggedInAs": "Logged in as",
     "loggedInAsRole": "Signed in as",
 
@@ -29,6 +31,7 @@
     "roleStaff": "Staff",
     "roleClient": "Client",
     "roleUser": "User",
+    "roleGuest": "Guest",
     "success": "Signed in successfully.",
     "backToApp": "Back to app",
     "securityNote": "If you don’t have access, contact an administrator.",

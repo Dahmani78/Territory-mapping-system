@@ -1,9 +1,10 @@
 {
   "Nav": {
+    "brand": "Cartographie des territoires",
+    "brandSubtitle": "Opérations USA / Canada",
     "map": "Carte",
     "partners": "Partenaires",
     "quotes": "Devis",
-    "test": "Test",
     "lang": "Langue"
   },
 
@@ -23,6 +24,7 @@
     "logout": "Se déconnecter",
 
     "loading": "Connexion…",
+    "roleLoading": "Chargement du rôle…",
 
     "loggedInAs": "Connecté en tant que",
     "loggedInAsRole": "Connecté en tant que",
@@ -31,6 +33,7 @@
     "roleStaff": "Staff",
     "roleClient": "Client",
     "roleUser": "Utilisateur",
+    "roleGuest": "Invité",
     "success": "Connexion réussie.",
     "backToApp": "Retour à l’application",
     "securityNote": "Si vous n’avez pas accès, contactez un administrateur.",

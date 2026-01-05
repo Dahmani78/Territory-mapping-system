@@ -1,13 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
+import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
-import { isAdmin } from "@/lib/authRole";
 
-type QuoteDetailRow = {
+const QuoteMiniMap = dynamic(() => import("@/components/quotes/QuoteMiniMap"), {
+  ssr: false
+});
+
+type QuoteRow = {
   id: string;
   created_at: string;
   address: string | null;
@@ -21,216 +25,246 @@ type QuoteDetailRow = {
   territory_name: string | null;
 };
 
-export default function QuoteDetailPage() {
-  const t = useTranslations("QuoteDetail");
-  const c = useTranslations("Common");
+type TerritoryGeo = {
+  id: string;
+  geojson: any; // view returns json or string
+};
+
+function Badge({ status }: { status: "assigned" | "unassigned" }) {
+  const cls =
+    status === "assigned"
+      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+      : "bg-amber-50 text-amber-800 border-amber-200";
+
+  return (
+    <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium ${cls}`}>
+      {status.toUpperCase()}
+    </span>
+  );
+}
+
+function TimelineItem({
+  title,
+  meta,
+  children
+}: {
+  title: string;
+  meta?: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="relative pl-6">
+      <div className="absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full border bg-white" />
+      <div className="rounded-xl border bg-white p-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <div className="font-medium">{title}</div>
+          {meta ? <div className="text-xs text-zinc-500">{meta}</div> : null}
+        </div>
+        {children ? <div className="mt-2 text-sm text-zinc-700">{children}</div> : null}
+      </div>
+    </div>
+  );
+}
+
+export default function QuoteDetailsPage() {
   const locale = useLocale();
-  const router = useRouter();
   const params = useParams();
   const id = String(params?.id ?? "");
 
-  const [admin, setAdmin] = useState(false);
-
-  const [row, setRow] = useState<QuoteDetailRow | null>(null);
   const [loading, setLoading] = useState(true);
+  const [quote, setQuote] = useState<QuoteRow | null>(null);
+  const [territoryGeojson, setTerritoryGeojson] = useState<any | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const openMapHref = useMemo(() => {
-    if (!row) return `/${locale}/map`;
-    return `/${locale}/map?lat=${encodeURIComponent(row.lat)}&lng=${encodeURIComponent(
-      row.lng
-    )}&quoteId=${encodeURIComponent(row.id)}`;
-  }, [row, locale]);
+  const href = (path: string) => `/${locale}${path}`;
+
+  const openInMapHref = useMemo(() => {
+    if (!quote) return href("/map");
+    const q = new URLSearchParams({
+      lat: String(quote.lat),
+      lng: String(quote.lng),
+      quoteId: quote.id
+    });
+    return `${href("/map")}?${q.toString()}`;
+  }, [quote, locale]);
 
   useEffect(() => {
-    (async () => {
+    let mounted = true;
+
+    const load = async () => {
+      setLoading(true);
+      setErrorMsg(null);
+      setTerritoryGeojson(null);
+
       try {
-        setAdmin(await isAdmin());
-      } catch {
-        setAdmin(false);
+        const { data, error } = await supabase
+          .from("v_quotes_list")
+          .select("*")
+          .eq("id", id)
+          .single();
+
+        if (error) throw new Error(error.message);
+
+        const row = data as QuoteRow;
+        if (!mounted) return;
+        setQuote(row);
+
+        // Charger le territoire (si assigné)
+        if (row.territory_id) {
+          const { data: tdata, error: terrErr } = await supabase
+            .from("v_territories_geojson")
+            .select("id, geojson")
+            .eq("id", row.territory_id)
+            .single();
+
+          if (!terrErr && tdata) {
+            const terr = tdata as TerritoryGeo;
+            const gj = typeof terr.geojson === "string" ? JSON.parse(terr.geojson) : terr.geojson;
+            if (mounted) setTerritoryGeojson(gj);
+          }
+        }
+      } catch (e: any) {
+        if (mounted) setErrorMsg(e?.message ?? "Unexpected error");
+      } finally {
+        if (mounted) setLoading(false);
       }
-    })();
-  }, []);
+    };
 
-  const load = async () => {
-    setLoading(true);
-    setErrorMsg(null);
+    if (id) void load();
 
-    try {
-      if (!id) throw new Error("Missing id");
-
-      // Repose sur votre vue existante v_quotes_list
-      const { data, error } = await supabase
-        .from("v_quotes_list")
-        .select("*")
-        .eq("id", id)
-        .maybeSingle();
-
-      if (error) throw new Error(error.message);
-      if (!data) throw new Error(t("notFound"));
-
-      setRow(data as QuoteDetailRow);
-    } catch (e: any) {
-      setErrorMsg(`${c("errorPrefix")}: ${e?.message ?? "Unexpected error"}`);
-      setRow(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    void load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      mounted = false;
+    };
   }, [id]);
 
-  const deleteQuote = async () => {
-    if (!row) return;
-    const ok = confirm(t("confirmDelete"));
-    if (!ok) return;
+  if (loading) {
+    return (
+      <main className="mx-auto max-w-5xl p-6">
+        <div className="text-sm text-zinc-600">Loading…</div>
+      </main>
+    );
+  }
 
-    setErrorMsg(null);
-
-    const { error } = await supabase.from("quotes").delete().eq("id", row.id);
-    if (error) {
-      setErrorMsg(`${c("errorPrefix")}: ${error.message}`);
-      return;
-    }
-
-    router.push(`/${locale}/quotes`);
-    router.refresh();
-  };
+  if (errorMsg || !quote) {
+    return (
+      <main className="mx-auto max-w-5xl p-6">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          {errorMsg ?? "Quote not found"}
+        </div>
+        <div className="mt-4">
+          <Link className="underline" href={href("/quotes")}>
+            ← Back to Quotes
+          </Link>
+        </div>
+      </main>
+    );
+  }
 
   return (
-    <main className="mx-auto max-w-4xl p-6">
+    <main className="mx-auto max-w-5xl p-6">
+      {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">{t("title")}</h1>
-          <div className="mt-1 text-sm opacity-70">
-            <Link className="underline" href={`/${locale}/quotes`}>
-              {t("backToList")}
+          <div className="text-xs text-zinc-500">Quote</div>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight">
+            #{quote.id.slice(0, 8)}
+          </h1>
+          <div className="mt-1 text-sm text-zinc-600">
+            Created {new Date(quote.created_at).toLocaleString()}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Badge status={quote.status} />
+          <Link
+            className="rounded-lg border bg-white px-3 py-2 text-sm font-medium hover:bg-zinc-50"
+            href={openInMapHref}
+          >
+            Open in map
+          </Link>
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        {/* Left: Map + key facts */}
+        <div className="space-y-6">
+          <QuoteMiniMap
+            lat={Number(quote.lat)}
+            lng={Number(quote.lng)}
+            territoryGeojson={territoryGeojson}
+          />
+
+          <div className="rounded-xl border bg-white p-5">
+            <div className="text-sm font-semibold">Summary</div>
+
+            <dl className="mt-4 grid gap-3 text-sm">
+              <div>
+                <dt className="text-xs text-zinc-500">Address</dt>
+                <dd className="mt-1">{quote.address ?? "-"}</dd>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <dt className="text-xs text-zinc-500">Partner</dt>
+                  <dd className="mt-1 font-medium">{quote.partner_name ?? "-"}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-zinc-500">Territory</dt>
+                  <dd className="mt-1 font-medium">{quote.territory_name ?? "-"}</dd>
+                </div>
+              </div>
+
+              {quote.status === "unassigned" ? (
+                <div>
+                  <dt className="text-xs text-zinc-500">Reason</dt>
+                  <dd className="mt-1 font-mono text-xs">{quote.reason ?? "-"}</dd>
+                </div>
+              ) : null}
+            </dl>
+          </div>
+
+          <div>
+            <Link className="underline text-sm" href={href("/quotes")}>
+              ← Back to Quotes
             </Link>
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          <Link className="btn btn-secondary" href={openMapHref}>
-            {t("openMap")}
-          </Link>
+        {/* Right: Timeline */}
+        <div className="rounded-xl border bg-zinc-50 p-5">
+          <div className="text-sm font-semibold">Timeline</div>
+          <div className="mt-4 space-y-4 border-l pl-4">
+            <TimelineItem
+              title="Quote created"
+              meta={new Date(quote.created_at).toLocaleString()}
+            >
+              {quote.address ? (
+                <div className="text-zinc-700">{quote.address}</div>
+              ) : (
+                <div className="text-zinc-700">Coordinates provided</div>
+              )}
+              <div className="mt-1 font-mono text-xs text-zinc-600">
+                {Number(quote.lat).toFixed(6)}, {Number(quote.lng).toFixed(6)}
+              </div>
+            </TimelineItem>
 
-          {admin && row ? (
-            <button className="btn btn-danger" onClick={deleteQuote}>
-              {t("delete")}
-            </button>
-          ) : null}
+            {quote.status === "assigned" ? (
+              <TimelineItem title="Assigned to partner" meta="Territory match (priority)">
+                <div>
+                  Partner: <span className="font-medium">{quote.partner_name}</span>
+                </div>
+                <div className="mt-1">
+                  Territory: <span className="font-medium">{quote.territory_name}</span>
+                </div>
+              </TimelineItem>
+            ) : (
+              <TimelineItem title="No territory matched" meta="Unassigned">
+                <div className="font-mono text-xs">{quote.reason ?? "No match"}</div>
+              </TimelineItem>
+            )}
+          </div>
         </div>
       </div>
-
-      {errorMsg && (
-        <div className="mt-4 rounded border border-red-300 bg-red-50 p-3 text-sm text-red-700">
-          {errorMsg}
-        </div>
-      )}
-
-      {loading ? (
-        <div className="mt-6 text-sm opacity-70">{t("loading")}</div>
-      ) : !row ? (
-        <div className="mt-6 text-sm opacity-70">{t("notFound")}</div>
-      ) : (
-        <div className="mt-6 grid gap-6 md:grid-cols-3">
-          {/* Main card */}
-          <section className="md:col-span-2 rounded-xl border p-5 bg-white">
-            <div className="flex items-center justify-between gap-3">
-              <div className="text-sm opacity-70">{t("quoteId")}</div>
-              <div className="font-mono text-xs">{row.id}</div>
-            </div>
-
-            <div className="mt-4 grid gap-3">
-              <div>
-                <div className="text-xs opacity-70">{t("createdAt")}</div>
-                <div className="text-sm font-medium">
-                  {new Date(row.created_at).toLocaleString()}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <div className="text-xs opacity-70">{t("lat")}</div>
-                  <div className="font-mono text-sm">{Number(row.lat).toFixed(6)}</div>
-                </div>
-                <div>
-                  <div className="text-xs opacity-70">{t("lng")}</div>
-                  <div className="font-mono text-sm">{Number(row.lng).toFixed(6)}</div>
-                </div>
-              </div>
-
-              <div>
-                <div className="text-xs opacity-70">{t("address")}</div>
-                <div className="text-sm">{row.address ?? "-"}</div>
-              </div>
-
-              <div className="pt-2 border-t">
-                <div className="text-xs opacity-70">{t("assignment")}</div>
-                <div className="mt-2 grid gap-2 text-sm">
-                  <div>
-                    <span className="opacity-70">{t("status")}: </span>
-                    <span className="font-medium">{row.status}</span>
-                  </div>
-
-                  <div>
-                    <span className="opacity-70">{t("partner")}: </span>
-                    <span className="font-medium">{row.partner_name ?? "-"}</span>
-                  </div>
-
-                  <div>
-                    <span className="opacity-70">{t("territory")}: </span>
-                    <span className="font-medium">{row.territory_name ?? "-"}</span>
-                  </div>
-
-                  {row.reason ? (
-                    <div>
-                      <span className="opacity-70">{t("reason")}: </span>
-                      <span className="font-mono text-xs">{row.reason}</span>
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Timeline card */}
-          <aside className="rounded-xl border p-5 bg-white">
-            <div className="font-semibold">{t("timeline")}</div>
-
-            <ol className="mt-4 space-y-3 text-sm">
-              <li className="rounded border p-3">
-                <div className="text-xs opacity-70">{t("step1Title")}</div>
-                <div className="font-medium">{t("step1Body")}</div>
-                <div className="mt-1 text-xs opacity-70">
-                  {new Date(row.created_at).toLocaleString()}
-                </div>
-              </li>
-
-              <li className="rounded border p-3">
-                <div className="text-xs opacity-70">{t("step2Title")}</div>
-                <div className="font-medium">
-                  {row.status === "assigned" ? t("step2Assigned") : t("step2Unassigned")}
-                </div>
-                {row.status === "unassigned" && row.reason ? (
-                  <div className="mt-1 text-xs font-mono opacity-70">{row.reason}</div>
-                ) : null}
-              </li>
-
-              <li className="rounded border p-3">
-                <div className="text-xs opacity-70">{t("step3Title")}</div>
-                <div className="font-medium">{t("step3Body")}</div>
-                <Link className="underline text-xs" href={openMapHref}>
-                  {t("openMap")}
-                </Link>
-              </li>
-            </ol>
-          </aside>
-        </div>
-      )}
     </main>
   );
 }
