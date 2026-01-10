@@ -8,9 +8,12 @@ import {
   Marker,
   TileLayer,
   ZoomControl,
+  useMap,
   useMapEvents
 } from "react-leaflet";
 import L from "leaflet";
+import type { Map as LeafletMap } from "leaflet";
+
 import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabaseClient";
 import { fixLeafletIcon } from "@/lib/leafletIcons";
@@ -146,6 +149,13 @@ function geojsonToLeafletPolygons(geojson: any): L.Polygon[] {
 }
 
 export default function TerritoryMap() {
+  const t = useTranslations("Map");
+  const searchParams = useSearchParams();
+  
+  const mapRef = useRef<L.Map | null>(null);
+  const territoriesGroupRef = useRef<L.FeatureGroup | null>(null);
+  const drawInitRef = useRef<boolean>(false);
+
   // Expects Supabase RPCs:
   // - find_partner_by_point(lat, lng)
   // - upsert_territory(territory_id, partner_id, name, geom_geojson, priority)
@@ -154,18 +164,7 @@ export default function TerritoryMap() {
   // - list_overlaps()
   // - resolve_overlap_raise_priority(p_territory_id)
 
-  const t = useTranslations("Map");
-
-  const searchParams = useSearchParams();
-
-
-  const mapRef = useRef<L.Map | null>(null);
-
-  // Leaflet Draw editable group
-  const territoriesGroupRef = useRef<L.FeatureGroup | null>(null);
-
-  // Draw plugin init guard
-  const drawInitRef = useRef(false);
+  
 
   // Active partners for drawing dropdown
   const [partnersActive, setPartnersActive] = useState<Partner[]>([]);
@@ -622,24 +621,26 @@ export default function TerritoryMap() {
   }, [overlapIds]);
 
   useEffect(() => {
-    if (typeof window === "undefined" || drawInitRef.current) return;
+  if (typeof window === "undefined" || drawInitRef.current) return;
 
-    const init = async () => {
-      (window as any).L = L;
-      await import("leaflet-draw");
+  const init = async () => {
+    (window as any).L = L;
+    await import("leaflet-draw");
 
-      if (!(L as any).Control?.Draw) {
-        setErrorMsg("Leaflet Draw failed to load.");
-        return;
-      }
+    if (!(L as any).Control?.Draw) {
+      setErrorMsg("Leaflet Draw failed to load.");
+      return;
+    }
 
-      drawInitRef.current = true;
-      if (mapRef.current) initDraw(mapRef.current);
-    };
+    // Plugin chargé
+    drawInitRef.current = true;
+    // Ne pas appeler initDraw ici : MapInit le fera quand la map est prête.
+  };
 
-    init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
 
   const initDraw = (map: L.Map) => {
     if (territoriesGroupRef.current) return;
@@ -1067,20 +1068,51 @@ export default function TerritoryMap() {
       </div>
 
       <MapContainer
-        center={[45, -95]}
-        zoom={4}
-        className="h-full w-full"
-        zoomControl={false}
-        whenReady={(e) => {
-          mapRef.current = e.target;
-          if (drawInitRef.current) initDraw(e.target);
-        }}
-      >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <ZoomControl position="bottomright" />
-        <ClickToSelect enabled={mode === "quote"} onSelect={setQuotePoint} />
-        {quoteLat != null && quoteLng != null && <Marker position={[quoteLat, quoteLng]} />}
-      </MapContainer>
+  center={[45, -95]}
+  zoom={4}
+  className="h-full w-full"
+  zoomControl={false}
+  whenReady={() => {
+    // quand la map est prête, on init via le composant MapInit ci-dessous
+  }}
+>
+  <MapInit
+    mapRef={mapRef}
+    drawInitRef={drawInitRef}
+    initDraw={initDraw}
+  />
+
+  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+  <ZoomControl position="bottomright" />
+  <ClickToSelect enabled={mode === "quote"} onSelect={setQuotePoint} />
+  {quoteLat != null && quoteLng != null && <Marker position={[quoteLat, quoteLng]} />}
+</MapContainer>
+
     </div>
   );
+  function MapInit({
+  mapRef,
+  drawInitRef,
+  initDraw
+}: {
+  mapRef: React.MutableRefObject<L.Map | null>;
+  drawInitRef: React.MutableRefObject<boolean>;
+  initDraw: (map: L.Map) => void;
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    mapRef.current = map;
+
+    // Ici drawInitRef.current == true signifie "leaflet-draw est chargé"
+    // Donc on peut initialiser la toolbar draw dès que la map existe.
+    if (drawInitRef.current) {
+      initDraw(map);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map]);
+
+  return null;
+}
+
 }
