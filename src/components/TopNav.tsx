@@ -9,6 +9,9 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import AuthStatus from "@/components/AuthStatus";
 import { isAdmin } from "@/lib/authRole";
 
+import { supabase } from "@/lib/supabaseClient";
+
+
 type NavItem = { key: "map" | "quotes" | "partners"; path: string; adminOnly?: boolean };
 
 function cx(...classes: Array<string | false | undefined | null>) {
@@ -24,17 +27,36 @@ export default function TopNav() {
   const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const ok = await isAdmin();
-        setAdmin(ok);
-      } catch {
-        setAdmin(false);
-      } finally {
-        setAdminChecked(true);
-      }
-    })();
-  }, []);
+  let mounted = true;
+
+  const checkAdmin = async () => {
+    try {
+      const ok = await isAdmin();
+      if (!mounted) return;
+      setAdmin(ok);
+    } catch {
+      if (!mounted) return;
+      setAdmin(false);
+    } finally {
+      if (!mounted) return;
+      setAdminChecked(true);
+    }
+  };
+
+  // Check au chargement
+  checkAdmin();
+
+  // Re-check après login / logout / refresh token
+  const { data: sub } = supabase.auth.onAuthStateChange(() => {
+    checkAdmin();
+  });
+
+  return () => {
+    mounted = false;
+    sub.subscription.unsubscribe();
+  };
+}, []);
+
 
   const href = (path: string) => `/${locale}${path}`;
 
